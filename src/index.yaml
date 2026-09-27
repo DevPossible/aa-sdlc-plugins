@@ -18,7 +18,7 @@ planned:
     wave: 1
     attaches_to: [implement, generate-tests, setup-environment, setup-pipeline, release]
     satisfies: [R-09, R-10, R-11, R-12, R-19, R-20, R-35, R-36, R-37, R-38]
-    summary: .NET build, test, lint, format, package, and publish for the life-cycle steps, with analyzers and lock files; not a C# coding skill.
+    summary: .NET build, test, lint, format, package, and publish for the life-cycle steps, with StyleCop and the .NET analyzers configured from a Microsoft or community rule set, and lock files; not a C# coding skill.
   - name: powershell-sdlc
     kind: tech-stack
     wave: 1
