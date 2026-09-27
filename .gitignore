@@ -1,0 +1,17 @@
+# Build outputs
+/.build/
+/.dist/
+/.tools/
+
+# AI agent working files
+/.aitemp/
+
+# IDE
+.vs/
+.vscode/*
+!.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,12 @@
+# Text files are stored and checked out with LF line endings on every platform, so the
+# content package, the feature files, and the scripts are byte-identical everywhere the
+# framework installs them (O-16). PowerShell 7 and Go both read LF files without complaint.
+* text=auto eol=lf
+
+# Binary artifacts, never normalised
+*.png binary
+*.jpg binary
+*.ico binary
+*.zip binary
+*.tgz binary
+*.exe binary

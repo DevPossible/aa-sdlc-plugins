@@ -1,0 +1,9 @@
+# Every plugin in this repository: one entry per folder under src/.
+# The build fails when an entry's name, kind, or version disagrees with the folder's plugin.yaml.
+#
+#   - name: k6
+#     kind: tool                 # tech-stack | tool | process
+#     version: 0.1.0
+#     path: k6                   # the folder under src/
+#     summary: Load and performance tests with k6 for the performance-test step.
+plugins: []
