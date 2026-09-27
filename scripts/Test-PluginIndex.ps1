@@ -55,6 +55,35 @@ foreach ($entry in $entries) {
     }
 }
 
+$planned = @($index.planned | Where-Object { $_ })
+foreach ($entry in $planned) {
+    $label = "planned entry '$($entry.name)'"
+    foreach ($field in 'name', 'kind', 'wave', 'summary') {
+        if (-not $entry[$field]) { "$label has no $field" }
+    }
+    if ($entry.kind -notin $kinds) {
+        "$label has kind '$($entry.kind)'; a plugin is one of $($kinds -join ', ')"
+    }
+    if (-not $entry.attaches_to -and -not $entry.satisfies) {
+        "$label names no core step, process, or requirement (attaches_to or satisfies)"
+    }
+    if ($entry.name -and (Test-Path -Path (Join-Path -Path $SourcePath -ChildPath $entry.name))) {
+        "$label has a folder; move it from planned to plugins"
+    }
+}
+
+# Names are unique, and a tech-stack or tool pack ends in -sdlc so it never reads as a coding
+# skill for its language or tool (docs/decisions/0001)
+$seen = @{}
+foreach ($entry in @($entries) + @($planned)) {
+    if (-not $entry.name) { continue }
+    if ($seen.ContainsKey($entry.name)) { "plugin name '$($entry.name)' appears more than once in src/index.yaml" }
+    $seen[$entry.name] = $true
+    if ($entry.kind -in 'tech-stack', 'tool' -and $entry.name -notmatch '-sdlc$') {
+        "plugin '$($entry.name)' is a $($entry.kind) pack; its name must end in -sdlc"
+    }
+}
+
 foreach ($folder in Get-ChildItem -Path $SourcePath -Directory) {
     $name = $folder.Name
     if (-not $listed.ContainsKey($name)) {

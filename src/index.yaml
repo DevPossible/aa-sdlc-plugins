@@ -1,9 +1,203 @@
 # Every plugin in this repository: one entry per folder under src/.
 # The build fails when an entry's name, kind, or version disagrees with the folder's plugin.yaml.
 #
-#   - name: k6
+#   - name: k6-sdlc
 #     kind: tool                 # tech-stack | tool | process
 #     version: 0.1.0
-#     path: k6                   # the folder under src/
+#     path: k6-sdlc              # the folder under src/
 #     summary: Load and performance tests with k6 for the performance-test step.
 plugins: []
+
+# Plugins intended but not yet written. Each names what it will attach to in the framework:
+# core steps or processes (attaches_to) and core requirements (satisfies). An entry moves to
+# plugins when its folder exists. Tech-stack and tool packs end in -sdlc (docs/decisions/0001).
+planned:
+  # Tech-stack packs: how a stack carries out the life-cycle steps, never how to write its code
+  - name: dotnet-sdlc
+    kind: tech-stack
+    wave: 1
+    attaches_to: [implement, generate-tests, setup-environment, setup-pipeline, release]
+    satisfies: [R-09, R-10, R-11, R-12, R-19, R-20, R-35, R-36, R-37, R-38]
+    summary: .NET build, test, lint, format, package, and publish for the life-cycle steps, with analyzers and lock files; not a C# coding skill.
+  - name: powershell-sdlc
+    kind: tech-stack
+    wave: 1
+    attaches_to: [implement, generate-tests]
+    satisfies: [R-09, R-11, R-12, R-20, R-35]
+    summary: PowerShell formatting, PSScriptAnalyzer, Pester tiers, and module packaging for the life-cycle steps.
+  - name: android-sdlc
+    kind: tech-stack
+    wave: 2
+    attaches_to: [implement, generate-tests, e2e-tests, release]
+    satisfies: [R-09, R-10, R-11, R-12, R-20, R-35, R-36]
+    summary: Android Gradle builds, ktlint and detekt, instrumented tests, and signed release artifacts for the life-cycle steps.
+  - name: node-sdlc
+    kind: tech-stack
+    wave: 2
+    attaches_to: [implement, generate-tests]
+    satisfies: [R-10, R-11, R-12, R-35, R-36]
+    summary: Node builds, ESLint, test runners, and npm or pnpm lock files for the life-cycle steps.
+  - name: go-sdlc
+    kind: tech-stack
+    wave: 2
+    attaches_to: [implement, generate-tests]
+    satisfies: [R-09, R-11, R-12, R-35, R-36]
+    summary: Go formatting, vet and static analysis, test tiers, and module hygiene for the life-cycle steps.
+
+  # Tool packs: a tool the life cycle uses
+  - name: reqnroll-sdlc
+    kind: tool
+    wave: 1
+    attaches_to: [generate-tests, uat]
+    satisfies: [R-17]
+    summary: Execute the project's feature files on .NET with Reqnroll.
+  - name: godog-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [generate-tests, uat]
+    satisfies: [R-17]
+    summary: Execute the project's feature files on Go with godog.
+  - name: cucumber-js-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [generate-tests, uat]
+    satisfies: [R-17]
+    summary: Execute the project's feature files on Node with Cucumber.js.
+  - name: playwright-sdlc
+    kind: tool
+    wave: 1
+    attaches_to: [e2e-tests, review-ux, explore]
+    summary: End-to-end and visual regression tests with Playwright, including how a Blazor app differs from a server-rendered app.
+  - name: prettier-sdlc
+    kind: tool
+    wave: 1
+    attaches_to: [finish-branch]
+    satisfies: [R-09, R-35]
+    summary: Format changed files with Prettier, with opinions per language.
+  - name: gitlab-ci-sdlc
+    kind: tool
+    wave: 1
+    attaches_to: [setup-pipeline]
+    satisfies: [R-24, R-38]
+    summary: Pipeline definitions and runs on GitLab CI in which every step calls a root script and each artifact is built once.
+  - name: github-actions-sdlc
+    kind: tool
+    wave: 1
+    attaches_to: [setup-pipeline]
+    satisfies: [R-24, R-38]
+    summary: Pipeline definitions and runs on GitHub Actions in which every step calls a root script and each artifact is built once.
+  - name: azure-pipelines-sdlc
+    kind: tool
+    wave: 1
+    attaches_to: [setup-pipeline]
+    satisfies: [R-24, R-38]
+    summary: Pipeline definitions and runs on Azure Pipelines in which every step calls a root script and each artifact is built once.
+  - name: docker-compose-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [e2e-tests, setup-environment]
+    satisfies: [R-25, R-26]
+    summary: The local end-to-end environment as code with Docker Compose, started by the root test script.
+  - name: k6-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [performance-test]
+    summary: Load, stress, and soak tests with k6 against the stated targets, with the baseline recorded.
+  - name: gitleaks-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [maintain-security, security-test, finish-branch]
+    summary: Find committed secrets with gitleaks, in the pipeline and before a branch is finished.
+  - name: trivy-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [maintain-security, security-test]
+    summary: Scan dependencies, containers, and infrastructure definitions for known vulnerabilities with Trivy.
+  - name: semgrep-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [security-test, review]
+    summary: Static analysis for security weaknesses with Semgrep, tied to the threat model's mitigations.
+  - name: zap-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [security-test]
+    summary: Dynamic security testing of the running system with OWASP ZAP.
+  - name: bicep-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [setup-infrastructure]
+    satisfies: [R-30, R-39]
+    summary: Environments as code on Azure with Bicep, with environment settings kept apart from functional ones.
+  - name: terraform-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [setup-infrastructure]
+    satisfies: [R-30, R-39]
+    summary: Environments as code with Terraform, with environment settings kept apart from functional ones.
+  - name: opentelemetry-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [observability, validate-production]
+    summary: Traces, metrics, and logs with OpenTelemetry that show whether the scenarios are met in production.
+  - name: cloudflare-pages-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [release, rollback, validate-production]
+    summary: Release, roll back, and validate a static site on Cloudflare Pages.
+  - name: nuget-publish-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [prepare-release, release]
+    satisfies: [R-38]
+    summary: Publish the one built NuGet package of a release, with its version from the release.
+  - name: npm-publish-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [prepare-release, release]
+    satisfies: [R-38]
+    summary: Publish the one built npm package of a release, with its version from the release.
+  - name: commitlint-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [finish-branch, prepare-release]
+    satisfies: [R-28]
+    summary: Check commit messages against the Conventional Commits format the project config names, and derive the version bump from them.
+  - name: stryker-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [generate-tests, test-strategy]
+    summary: Mutation testing with Stryker to measure how much the test suite would catch.
+  - name: renovate-sdlc
+    kind: tool
+    wave: 2
+    attaches_to: [maintain-security]
+    satisfies: [R-36]
+    summary: Keep dependencies current with Renovate, through the package manager and the lock file.
+
+  # Process packs: an extra step or gate an organisation needs
+  - name: release-hygiene
+    kind: process
+    wave: 1
+    attaches_to: [deployment, prepare-release]
+    summary: Before a public release, check the published tree for internal names, secrets, and licence headers.
+  - name: change-advisory
+    kind: process
+    wave: 2
+    attaches_to: [deployment, release]
+    summary: A change-advisory approval recorded before a release goes to production.
+  - name: accessibility-review
+    kind: process
+    wave: 2
+    attaches_to: [verification, review-ux]
+    summary: A WCAG review of the built user interface, with each finding raised as a ticket.
+  - name: privacy-review
+    kind: process
+    wave: 2
+    attaches_to: [conception, threat-model]
+    summary: A privacy impact review of the personal data the system handles, recorded before build.
+  - name: licence-compliance
+    kind: process
+    wave: 2
+    attaches_to: [prepare-release, maintain-security]
+    summary: Check every dependency's licence against the project's policy before a release.

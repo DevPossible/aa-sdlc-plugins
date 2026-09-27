@@ -5,7 +5,8 @@ the software life cycle and never names a tool; plugins supply the specifics for
 tool, or an extra process step. See [aasdlc.com/plugins.html](https://aasdlc.com/plugins.html)
 for what a plugin is.
 
-**Status:** the repository is set up; no plugins are published yet.
+**Status:** no plugins are published yet. The ones intended are listed under `planned` in
+[`src/index.yaml`](src/index.yaml), each with the steps and requirements it will attach to.
 
 ## What belongs here
 
@@ -22,11 +23,16 @@ step or process it serves (`aa.attaches_to`) or the core requirement it satisfie
 organisation-wide practice, or media generation, is an ordinary agent skill and does not belong
 here. The `aa` command line refuses it.
 
+Tech-stack and tool packs are named `<stack or tool>-sdlc`, such as `dotnet-sdlc` or
+`playwright-sdlc`, so none of them reads as a skill for writing code in that stack or with that
+tool ([decision 0001](docs/decisions/0001-tech-stack-and-tool-pack-names-end-in-sdlc.md)). Process
+packs keep a plain name, such as `change-advisory`.
+
 ## Layout
 
 ```
 src/
-  index.yaml        every plugin: name, kind, version, folder, one-line summary
+  index.yaml        every plugin (name, kind, version, folder, summary), and the planned ones
   <name>/
     README.md       what the plugin covers and what it needs
     plugin.yaml     name, version, kind, requirements (the framework's plugin manifest)
